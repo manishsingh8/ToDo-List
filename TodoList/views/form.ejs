@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title><%= title%></title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="text">
+        <h2>Todo List</h2>
+      </div>
+      <div class="form-container">
+        <form action="/user-list" method="POST" id="input-form">
+          <input
+            type="text"
+            class="input-field"
+            name="name"
+            placeholder="Enter Name"
+            required
+          />
+          <button type="submit"><i class="fa-sharp fa-solid fa-plus"></i></button>
+        </form>
+      </div>
+      <div>
+        <% for(i of user_list) { %>
+        <div class="list-container">
+          <div class="list-item">
+            <span><%= i.name %></span>
+            <a href="/delete-list/?name=<%= i.name%>">
+              <i class="fa-solid fa-trash dlt-btn"></i>
+            </a>
+          </div>
+        </div>
+        <%}%>
+      </div>
+    </div>
+  </body>
+</html>
