@@ -28,26 +28,45 @@ let list = [
 ];
 
 app.get('/',(req,res)=>{
-    return res.render('form',{
-        title:'Todo List',
-        user_list:list
-    });
+    ItemList.find({})
+    .then((Item)=>{
+        return res.render('form',{
+            title:'Todo List',
+            user_list:Item,
+        });
+    })
+    .catch((err)=>{
+        console.log('Error',err);
+        return;
+    })
 });
 
 // to read and save the data sent from browser
 app.post('/user-list',function(req,res){
-    list.push(req.body);
-    console.log(req.body);
-    return res.redirect('/');
+    ItemList.create({name:req.body.name})
+    .then((newList)=>{
+        console.log("*****",newList);
+        return res.redirect('back');
+    })
+    .catch((err)=>{
+        console.log("Error",err);
+        return res.redirect('/');
+    });
 });
 
 
 //to delete the list
-app.get('/delete-list',(req,res)=>{
-    console.log(req.query);
-    let index = list.findIndex(item => item.name === req.query.name);
-    list.splice(index,1);
-    return res.redirect('back');
+app.get('/delete-list',(req,res)=>{ 
+    let id = req.query.id;
+    console.log(id);
+    ItemList.findByIdAndDelete(id)
+    .then((id)=>{
+        console.log("Deleted Successfully item with id:",id);
+        return res.redirect('back');
+    }).catch((err)=>{
+        console.log("Error while deleting the item");
+        return res.redirect('back');
+    })
 }) 
 
 app.listen(port,(err)=>{
